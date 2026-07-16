@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyclicky"
+version = "0.1.0"
+description = "An asynchronous Python client for the Clicky Analytics API."
+readme = "README.md"
+license = { text = "MIT" }
+
+authors = [
+    { name = "avclicky", email = "pyclicky@getclicky.com" }
+]
+
+requires-python = ">=3.10"
+
+dependencies = [
+    "aiohttp>=3.9"
+]
+
+keywords = [
+    "clicky",
+    "analytics",
+    "api",
+    "asyncio",
+    "aiohttp"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/avclicky/pyclicky"
+Documentation = "https://github.com/avclicky/pyclicky"
+Repository = "https://github.com/avclicky/pyclicky"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.mypy]
+strict = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyclicky"]
