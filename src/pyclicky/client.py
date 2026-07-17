@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Self, Optional, Type
+from types import TracebackType
 
 import aiohttp
 
@@ -19,7 +20,7 @@ class ClickyClient:
         *,
         session: aiohttp.ClientSession | None = None,
         timeout: float = 30,
-    ):
+    ) -> None:
         self.site_id = str(site_id)
         self.sitekey = sitekey
 
@@ -27,12 +28,17 @@ class ClickyClient:
         self._session = session
         self._timeout = aiohttp.ClientTimeout(total=timeout)
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Self:
         if self._session is None:
             self._session = aiohttp.ClientSession(timeout=self._timeout)
         return self
 
-    async def __aexit__(self, *_):
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc: Optional[BaseException],
+        tb: Optional[TracebackType],
+    ) -> None:
         if not self._external_session and self._session:
             await self._session.close()
 
@@ -88,32 +94,32 @@ class ClickyClient:
     # Convenience helpers
     # ------------------------------------------------------------------
 
-    async def visitors(self, **kwargs):
+    async def visitors(self, **kwargs: Any) -> Any:
         return await self.query("visitors", **kwargs)
 
-    async def actions(self, **kwargs):
+    async def actions(self, **kwargs: Any) -> Any:
         return await self.query("actions", **kwargs)
 
-    async def pages(self, **kwargs):
+    async def pages(self, **kwargs: Any) -> Any:
         return await self.query("pages", **kwargs)
 
-    async def downloads(self, **kwargs):
+    async def downloads(self, **kwargs: Any) -> Any:
         return await self.query("downloads", **kwargs)
 
-    async def searches(self, **kwargs):
+    async def searches(self, **kwargs: Any) -> Any:
         return await self.query("searches", **kwargs)
 
-    async def links(self, **kwargs):
+    async def links(self, **kwargs: Any) -> Any:
         return await self.query("links", **kwargs)
 
-    async def countries(self, **kwargs):
+    async def countries(self, **kwargs: Any) -> Any:
         return await self.query("countries", **kwargs)
 
-    async def visitors_list(self, **kwargs):
+    async def visitors_list(self, **kwargs: Any) -> Any:
         return await self.query("visitors-list", **kwargs)
 
-    async def actions_list(self, **kwargs):
+    async def actions_list(self, **kwargs: Any) -> Any:
         return await self.query("actions-list", **kwargs)
 
-    async def goals(self, **kwargs):
+    async def goals(self, **kwargs: Any) -> Any:
         return await self.query("goals", **kwargs)

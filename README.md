@@ -37,3 +37,32 @@ await client.query(
 ```
 
 Supports every Clicky report type via `query()`.
+
+## Development environment
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+python -m pip install --upgrade pip
+python -m pip install -e .
+
+# Run pre-commit
+python -m pip install pre-commit
+pre-commit install
+pre-commit run --all-files
+
+# Run tests
+python -m pip install -e ".[test]"
+pytest
+
+# Run command line
+python -m pyclicky --help
+# To output debug logs and API responses to a file run:
+python -m pyclicky -vv 2> out.txt
+
+# Build package
+python -m pip install build
+python -m build
+```
