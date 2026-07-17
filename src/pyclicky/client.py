@@ -1,9 +1,32 @@
 from __future__ import annotations
 
+from datetime import date, datetime
+from enum import StrEnum
 from typing import Any, Self, Optional, Type
 from types import TracebackType
 
 import aiohttp
+
+
+def _serialize(value: Any) -> str | int | float:
+    """Convert Python objects into Clicky API query parameters."""
+
+    if isinstance(value, StrEnum):
+        return value
+
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+
+    if isinstance(value, date):
+        return value.isoformat()
+
+    if isinstance(value, bool):
+        return "1" if value else "0"
+
+    if isinstance(value, (str, int, float)):
+        return value
+
+    raise TypeError(f"Unsupported query parameter type: {type(value).__name__}")
 
 
 class ClickyAPIError(Exception):
@@ -73,6 +96,14 @@ class ClickyClient:
             "output": "json",
             **params,
         }
+
+        query.update(
+            {
+                key: _serialize(value)
+                for key, value in params.items()
+                if value is not None
+            }
+        )
 
         async with self.session.get(self.BASE_URL, params=query) as resp:
             resp.raise_for_status()
