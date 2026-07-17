@@ -1,13 +1,9 @@
-[build-system]
-requires = ["hatchling>=1.27"]
-build-backend = "hatchling.build"
-
 [project]
 name = "pyclicky"
 version = "0.1.0"
 description = "An asynchronous Python client for the Clicky Analytics API."
 readme = "README.md"
-license = { text = "MIT" }
+license = {text = "Apache-2.0"}
 
 authors = [
     { name = "avclicky", email = "pyclicky@getclicky.com" }
@@ -40,6 +36,13 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-asyncio",
+    "python-dotenv",
+]
+
 [project.urls]
 Homepage = "https://github.com/avclicky/pyclicky"
 Documentation = "https://github.com/avclicky/pyclicky"
@@ -56,11 +59,12 @@ dev = [
 [tool.ruff]
 line-length = 88
 
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-
 [tool.mypy]
+python_version = "3.11"
+exclude = [".venv", "venv", "build"]
+mypy_path = "src"
+pretty = true
 strict = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/pyclicky"]
+show_error_codes = true
+warn_incomplete_stub = true
+enable_error_code = ["ignore-without-code", "redundant-self", "truthy-iterable"]

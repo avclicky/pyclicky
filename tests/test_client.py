@@ -1,3 +1,5 @@
+"""Tests for pyclicky."""
+
 import pytest
 
 from pyclicky import ClickyClient
