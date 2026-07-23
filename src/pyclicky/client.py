@@ -144,8 +144,14 @@ class ClickyClient:
     async def countries(self, **kwargs: Any) -> Any:
         return await self.query("countries", **kwargs)
 
+    async def time_total(self, **kwargs: Any) -> Any:
+        return await self.query("time-total", **kwargs)
+
     async def visitors_list(self, **kwargs: Any) -> Any:
         return await self.query("visitors-list", **kwargs)
+
+    async def visitors_online(self, **kwargs: Any) -> Any:
+        return await self.query("visitors-online", **kwargs)
 
     async def actions_list(self, **kwargs: Any) -> Any:
         return await self.query("actions-list", **kwargs)
