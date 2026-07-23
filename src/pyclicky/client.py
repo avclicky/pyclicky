@@ -7,6 +7,8 @@ from types import TracebackType
 
 import aiohttp
 
+from .exceptions import ClickyAPIError
+
 
 def _serialize(value: Any) -> str | int | float:
     """Convert Python objects into Clicky API query parameters."""
@@ -27,10 +29,6 @@ def _serialize(value: Any) -> str | int | float:
         return value
 
     raise TypeError(f"Unsupported query parameter type: {type(value).__name__}")
-
-
-class ClickyAPIError(Exception):
-    """Raised when the Clicky API returns an error."""
 
 
 class ClickyClient:
