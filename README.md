@@ -57,11 +57,6 @@ pre-commit run --all-files
 python -m pip install -e ".[test]"
 pytest
 
-# Run command line
-python -m pyclicky --help
-# To output debug logs and API responses to a file run:
-python -m pyclicky -vv 2> out.txt
-
 # Build package
 python -m pip install build
 python -m build
