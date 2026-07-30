@@ -6,8 +6,15 @@ from typing import Any, Self, Optional, Type
 from types import TracebackType
 
 import aiohttp
+from aiohttp import ClientConnectorError
 
-from .exceptions import ClickyAPIError
+from .exceptions import (
+    ClickyAPIError,
+    AuthenticationError,
+    InvalidEndpoint,
+    ConnectionError,
+    ServiceUnavailable,
+)
 
 
 def _serialize(value: Any) -> str | int | float:
@@ -103,21 +110,37 @@ class ClickyClient:
             }
         )
 
-        async with self.session.get(self.BASE_URL, params=query) as resp:
-            resp.raise_for_status()
+        try:
+            async with self.session.get(self.BASE_URL, params=query) as resp:
+                # Handle explicit HTTP status codes
+                # Clicky's API does not change HTTP status codes explicitly, but
+                # their server infrastructure can produce 503s.
+                if resp.status == 503:
+                    raise ServiceUnavailable()
 
-            data = await resp.json(content_type=None)
+                if resp.status == 404:
+                    raise InvalidEndpoint()
 
-            # Clicky returns API errors inside the JSON payload.
-            if (
-                isinstance(data, list)
-                and data
-                and isinstance(data[0], dict)
-                and "error" in data[0]
-            ):
-                raise ClickyAPIError(data[0]["error"])
+                resp.raise_for_status()
 
-            return data
+                data = await resp.json(content_type=None)
+
+                # Clicky returns API errors inside the JSON payload.
+                if (
+                    isinstance(data, list)
+                    and data
+                    and isinstance(data[0], dict)
+                    and "error" in data[0]
+                ):
+                    if data[0]["error"] == "Invalid sitekey.":
+                        raise AuthenticationError()
+
+                    raise ClickyAPIError(data[0]["error"])
+
+                return data
+
+        except ClientConnectorError as e:
+            raise ConnectionError(e)
 
     # ------------------------------------------------------------------
     # Convenience helpers
