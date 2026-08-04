@@ -1,4 +1,4 @@
-from .client import ClickyClient
+from .client import ClickyClient, Report, ReportItem, ReportDate
 from .exceptions import (
     ClickyAPIError,
     AuthenticationError,
@@ -9,6 +9,9 @@ from .exceptions import (
 
 __all__ = [
     "ClickyClient",
+    "Report",
+    "ReportItem",
+    "ReportDate",
     "ClickyAPIError",
     "AuthenticationError",
     "InvalidEndpoint",
