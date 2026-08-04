@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 — 2026-08-04
+
+### Changed
+
+- Parse API responses internally and expose via dataclasses
+
 ## 0.2.0 — 2026-07-30
 
 ### Added

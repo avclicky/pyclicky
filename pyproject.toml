@@ -1,6 +1,6 @@
 [project]
 name = "pyclicky"
-version = "0.2.0"
+version = "0.3.0"
 description = "An asynchronous Python client for the Clicky Analytics API."
 readme = "README.md"
 license = {text = "Apache-2.0"}
